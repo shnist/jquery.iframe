@@ -40,17 +40,17 @@ and works on selectors that return unique or multiple DOM elements
 
 
 ###	*For example:*
-	**ZEN: .haystack (single DOM elemnt)**
+**ZEN: .haystack (single DOM elemnt)**
 	$('.haystack').frame(); // window.iframe.iframe0
 	$('.haystack').frame('needle'); // window.iframe.needle
 
 
-	**ZEN: .haystack*2 -- (2 DOM elemts)**
+**ZEN: .haystack*2 -- (2 DOM elemts)**
 	$('.haystack').frame(); // window.iframe.iframe0 & *.iframe1
 	$('.haystack').frame('needle'); // window.iframe.needle0 & *.needle1
 
 
-	**ZEN: .haystack#straw+.haystack[rel=two]+.haystack*2 -- (4 DOM elements)**
+**ZEN: .haystack#straw+.haystack[rel=two]+.haystack*2 -- (4 DOM elements)**
 	$('.haystack').frame('needle');
 	// window.iframe.straw, *.hay, *.needle0 & *.needle1
 
