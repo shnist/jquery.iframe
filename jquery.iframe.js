@@ -1,12 +1,13 @@
 /*jslint bitwise: true, eqeq: true, passfail: false, nomen: true, sloppy: true, plusplus: false, undef: true, evil: true */
-/*global window, document, console, $, jQuery, setInterval, LBI, self , BarrDevel, DWH : true, BH :true */
+/*global window, document, console, $, jQuery, undefined */
 
 /**
 
-	jQuery Plugin .frame( [handle [, options [, callback]]] )
-	@version: 1.0
-	@author Bruce Thomas
-	@requires jQuery Core 1.7+
+	jQuery Plugin .iframe( [handle [, options [, callback]]] )
+	@version  : 1.0
+	@author   : Bruce Thomas
+	@requires : jQuery Core 1.7+
+	@github   : https://github.com/fliptopbox/jquery.iframe/
 
 	Purpose:
 	This plugin injects iframe tag into a DOM element,
@@ -52,7 +53,7 @@
 	$('.haystack').frame(); // window.iframe.iframe0 & *.iframe1
 	$('.haystack').frame('needle'); // window.iframe.needle0 & *.needle1
 
-	ZEN: .haystack#straw+.haystack#hay+.haystack*2 -- (4 DOM elements)
+	ZEN: .haystack#straw+.haystack[rel=two]+.haystack*2 -- (4 DOM elements)
 	$('.haystack').frame('needle');
 	// window.iframe.straw, *.hay, *.needle0 & *.needle1
 
@@ -82,7 +83,6 @@
 			"allowTransparency": true,
 			"overflow": "hidden",
 			"width": "100%",
-			"height": "100px",
 			"border": "0",
 			"frameBorder": "0",
 			"scoll": "no",
@@ -91,7 +91,7 @@
 
 	var destroy = function (key) {
 			var me = window[pluginName];
-			if(!me[key]) { return; }
+			if (!me[key]) { return; }
 			me[key].parent.remove();
 			delete me[key];
 		},
