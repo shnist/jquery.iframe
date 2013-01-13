@@ -5,15 +5,15 @@
 	@github   : https://github.com/fliptopbox/jquery.iframe/
 
 ## Purpose:
-	>This plugin injects iframe tag into a DOM element,
-	and creates an Object reference to control the child iframe's DOM
-	and works on selectors that return unique or multiple DOM elements
+This plugin injects iframe tag into a DOM element,
+and creates an Object reference to control the child iframe's DOM
+and works on selectors that return unique or multiple DOM elements
 
-	- if the DOM element is unique the window reference will be @handle
-	- if the DOM element is not unique the window reference will be:
-		- the ID attribute (if found) or
-		- the REL attribute (if found) or
-		- a unique numeric iteration prefixed by @handle
+- if the DOM element is unique the window reference will be @handle
+- if the DOM element is not unique the window reference will be:
+	- the ID attribute (if found) or
+	- the REL attribute (if found) or
+	- a unique numeric iteration prefixed by @handle
 
 ## Arguments (type and default)
 	@handle		String		'iframe'	window reference
