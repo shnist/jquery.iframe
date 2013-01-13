@@ -7,23 +7,40 @@
 	@version: 1.0
 	@author Bruce Thomas
 	@requires jQuery Core 1.7+
-	@usage http://jsfiddle.net/fliptopbox/NqAma/
+
+	Purpose:
+	This plugin injects iframe tag into a DOM element,
+	and creates an Object reference to control the child iframe's DOM
+	and works on selectors that return unique or multiple DOM elements
+
+	- if the DOM element is unique the window reference will be @handle
+	- if the DOM element is not unique the window reference will be:
+		- the ID attribute (if found) or
+		- the REL attribute (if found) or
+		- a unique numeric iteration prefixed by @handle
 
 	Arguments (type and default)
 	@handle		String		'iframe'	window reference
 	@options	Object		{}			iframe attributes
 	@callback	Function	null		a function callback
 
-	Purpose:
-	This plugin injects an <iframe/> into a DOM element,
-	and creates an Object reference to control the child iframe's DOM
-	and works on selectors that return unique or multiple DOM elements
+	window.iframe methods:
+	eg. window.iframe.destroy('foo');
+	.release(n)		removes child reference key from iframe Object
+	.destroy(key)	removes reference, and deletes parent from DOM
 
-	- if the DOM element is unique the window reference will be @handle
-	- if the DOM element is not unique the window reference will be:
-		the ID attribute (if found) or
-		the REL attribute (if found) or
-		a unique numeric iteration prefixed by @handle
+	window.iframe[child] methods:
+	eg. window.iframe.foo.body;
+	.id()			ID value (String)
+	.parent()		parent window (jQuery Object)
+	.handle()		child's handle (String)
+	.index()		index of element (Number)
+	.window()		content window (DOM Object)
+	.document()		document element (DOM Object)
+	.head()			head elemeny (jQuery)
+	.body()			body element (jQuery)
+	.destroy()		method (Function)
+
 
 	For example:
 	ZEN: .haystack (single DOM elemnt)
@@ -71,7 +88,27 @@
 			"scrolling": "no"
 		};
 
+	var destroy = function (key) {
+			var me = window[pluginName];
+			if(!me[key]) { return; }
+			me[key].parent.remove();
+			delete me[key];
+		},
+		release = function (n) {
+			if(!(/(number|string)/).test(typeof n)) { return; }
+			$.each(window[pluginName], function (key, obj) {
+				var which = typeof n === 'string' ? 'handle' : 'index';
+				if(obj[which] === n) {
+					//obj.parent.html('gone');
+					delete window[pluginName][obj.handle];
+				}
+			});
+		};
+
 	window[pluginName] = window[pluginName] || {};
+	window[pluginName].release = release;
+	window[pluginName].destroy = destroy;
+
 	// The actual plugin constructor
 	function Plugin ( element, handle, options, callback, count, index ) {
 		this.element = element;
@@ -89,7 +126,7 @@
 	Plugin.prototype.init = function () {
 		var container = $(this.element), //$(this.handle),
 			iFrameDoc, handle, iframe,
-			that = this, id, rel,
+			that = this, id, rel, parent,
 			multiple = that.count > 1,
 			index = this.index, // sent to callback function
 			callback = this.callback,
@@ -98,6 +135,7 @@
 		$.each(container, function (n) {
 			id = this.id || null;
 			rel = $(this).attr('rel') || null;
+			parent = $(this);
 
 			// prevent id duplications.
 			if (multiple && that.options.id) {
@@ -107,9 +145,8 @@
 			// ensure Object reference is unique.
 			handle = multiple ? uuid(id || rel || (that.handle + that.index)) : that.handle;
 			iframe = $('<iframe/>').attr(that.options);
-			$(this)
-				.append('<!-- window.' + pluginName + '.' + handle + ' -->')
-				.append(iframe);
+			$(this).html(iframe)
+			$(this).append('<!-- window.' + pluginName + '.' + handle + ' -->');
 
 			iFrameDoc = iframe[0].contentWindow.document;
 			iFrameDoc.open('text/html', 'replace');
@@ -119,6 +156,7 @@
 			// create the window reference
 			window[pluginName][handle] = {
 				'id': that.options.id,
+				'parent': parent,
 				'handle': handle,
 				'index': index,
 				'window': iframe[0].contentWindow,
@@ -128,7 +166,10 @@
 				}()),
 				'body': (function () {
 					return $(iFrameDoc).find('body');
-				}())
+				}()),
+				'destroy': function () {
+					destroy(this.handle);
+				}
 			};
 
 			// execute the callback
@@ -142,11 +183,13 @@
 		handle = typeof handle === 'string' ? handle : null;
 		callback = typeof callback === 'function' ? callback : function () {};
 		var count = this.length;
-		window[pluginName] = window[pluginName] || {};
+
 		return this.each(function (n) {
-			if (!$.data(this, 'plugin_' + pluginName)) {
-				$.data(this, 'plugin_' + pluginName, new Plugin( this, handle, options, callback, count, n));
+			if ($.data(this, 'plugin_' + pluginName)) {
+				// an iframe already exists ...
+				window[pluginName].release(n); // release the Object handle
 			}
+			$.data(this, 'plugin_' + pluginName, new Plugin( this, handle, options, callback, count, n));
 		});
 	};
 }( jQuery, window, document ));
