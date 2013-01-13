@@ -15,28 +15,32 @@ and works on selectors that return unique or multiple DOM elements
 	- the REL attribute (if found) or
 	- a unique numeric iteration prefixed by @handle
 
-## Arguments (type and default)
-	@handle		String		'iframe'	window reference
-	@options	Object		{}			iframe attributes
-	@callback	Function	null		a function callback
+## Arguments (name, type, default value and description)
+	@handle		String		'iframe'	window reference - eg. window.iframe['foo']
+	@options	Object		{}			iframe attributes - eg. { height:100, id:bar ... }
+	@callback	Function	null		executed after creation
 
-## window.iframe methods:
-	eg. window.iframe.destroy('foo');
+## Methods for the window.iframe Object:
+### Example: window.iframe.destroy('foo');
+
 	.release(n)		removes child reference key from iframe Object
-	.destroy(key)	removes reference, and deletes parent from DOM
+	.destroy(key)	removes reference, and deletes parent selector from DOM
 
-## window.iframe[child] methods:
-	eg. window.iframe.foo.body;
-	.id()			ID value (String)
-	.parent()		parent window (jQuery Object)
-	.iframe()		parent iframe tag (jQuery Object)
-	.handle()		child's handle (String)
-	.index()		index of element (Number)
-	.window()		content window (DOM Object)
-	.document()		document element (DOM Object)
-	.head()			head elemeny (jQuery)
-	.body()			body element (jQuery)
-	.destroy()		method (Function)
+## Methods for the child Object of window.iframe:
+###	Example: window.iframe.foo.body;
+
+	Method			Type		Description
+	------------------------------------------------
+	.id()			String		ID value
+	.parent()		jQuery		parent window
+	.iframe()		jQuery		parent iframe tag
+	.handle()		String		child's handle
+	.index()		Number		index of element
+	.window()		DOM			content window
+	.document()		DOM			document element
+	.head()			jQuery		head elemeny
+	.body()			jQuery		body element
+	.destroy()		Function	method
 
 
 ###	*Usage example - injecting the iframe into a DOM element.*
