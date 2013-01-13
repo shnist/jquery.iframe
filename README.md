@@ -39,23 +39,24 @@ and works on selectors that return unique or multiple DOM elements
 	.destroy()		method (Function)
 
 
-	> *For example:*
-	> ZEN: .haystack (single DOM elemnt)
-	> $('.haystack').frame(); // window.iframe.iframe0
-	> $('.haystack').frame('needle'); // window.iframe.needle
+	*For example:*
+	ZEN: .haystack (single DOM elemnt)
+	$('.haystack').frame(); // window.iframe.iframe0
+	$('.haystack').frame('needle'); // window.iframe.needle
 
-	> ZEN: .haystack*2 -- (2 DOM elemts)
-	> $('.haystack').frame(); // window.iframe.iframe0 & *.iframe1
-	> $('.haystack').frame('needle'); // window.iframe.needle0 & *.needle1
+	ZEN: .haystack*2 -- (2 DOM elemts)
+	$('.haystack').frame(); // window.iframe.iframe0 & *.iframe1
+	$('.haystack').frame('needle'); // window.iframe.needle0 & *.needle1
 
-	> ZEN: .haystack#straw+.haystack[rel=two]+.haystack*2 -- (4 DOM elements)
-	> $('.haystack').frame('needle');
-	> // window.iframe.straw, *.hay, *.needle0 & *.needle1
+	ZEN: .haystack#straw+.haystack[rel=two]+.haystack*2 -- (4 DOM elements)
+	$('.haystack').frame('needle');
+	// window.iframe.straw, *.hay, *.needle0 & *.needle1
 
 ## Manipulating the child iframe:
-	> ZEN: .haystack (single DOM elemeny)
-	> $('.haystack').frame('needle'); // creates window.iframe.needle
-	> var child = window.iframe.needle; // the child controller
-	> child.body.addClass('donkey') // adds a class to <body/>
-	> child.body.append('Kong was here!') // adds string to <body/>
-	> child.head.html('<link rel="stylesheet" href="my.css" />') // add stylesheet
+	ZEN: .haystack (single DOM elemeny)
+	$('.haystack').frame('needle'); // creates window.iframe.needle
+	var child = window.iframe.needle; // the child controller
+	child.body.addClass('donkey') // adds a class to <body/>
+	child.body.append('Kong was here!') // adds string to <body/>
+	child.head.html('<link rel="stylesheet" href="my.css" />') // add stylesheet
+
