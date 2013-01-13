@@ -33,6 +33,7 @@
 	eg. window.iframe.foo.body;
 	.id()			ID value (String)
 	.parent()		parent window (jQuery Object)
+	.iframe()		parent iframe tag (jQuery Object)
 	.handle()		child's handle (String)
 	.index()		index of element (Number)
 	.window()		content window (DOM Object)
@@ -157,6 +158,7 @@
 			window[pluginName][handle] = {
 				'id': that.options.id,
 				'parent': parent,
+				'iframe': parent.find('iframe'),
 				'handle': handle,
 				'index': index,
 				'window': iframe[0].contentWindow,

@@ -7,7 +7,7 @@
 		body {
 			font-family: sans-serif;
 			font-size: 14px;
-			padding: 0 0 30px 0;
+			padding: 0 0 100px 0;
 			margin: 0;
 		}
 		.page {
@@ -18,7 +18,16 @@
 			bottom:0;
 			width:100%;
 			background: grey;
-			padding:10px
+			padding:10px;
+			float: left;
+		}
+		.console strong {
+			float:left;
+			width:5%;
+		}
+		.console span {
+			float: left;
+			width:70%;
 		}
 		.console a {
 			float:right;
@@ -69,9 +78,25 @@
 	<div class="console">
 		<strong>console:</strong>
 		<span>
-			$('.haystack').iframe('bar', {'id': 'foo', 'width': '25%', 'height': '50px', 'style': 'border:1px solid aqua'}, function () { this.body.html( 'window.iframe.' + this.handle + ' says ... hello'); this.body.css({'color':'white'}) })
-			<a href="#" class="do">do</a>
+			$('.haystack').iframe(
+						'bar',
+						{'id': 'foo', 'width': '25%', 'height': '50px', 'style': 'border:1px solid aqua'},
+						function () {
+							this.body.html( 'window.iframe.' + this.handle + ' says ... hello');
+							this.body.css({'color':'yellow'});
+							this.iframe.attr({'width': (this.index * 150) + this.iframe.width()});
+							if(this.handle === 'one') {
+								this.head.html('&lt;link rel="stylesheet" href="http://fliptopbox.com/LBFFC/css/global.css"&gt;');
+								this.iframe.height(200);
+							}
+							if(this.handle === 'two') {
+								this.head.html('&lt;link rel="stylesheet" type="text/css" href="http://sync-slate.com/themes/syncslate/css/global.css"&gt;');
+								this.body.prepend('&lt;div class="chevron"&gt;&lt;/div&gt;');
+							}
+						}
+					);
 		</span>
+		<a href="#" class="do">do</a>
 	</div>
 </body>
 
@@ -80,7 +105,23 @@
 <script type="text/javascript">
 	$('.do').click(function (e) {
 		e.preventDefault();
-		$('.haystack').iframe('bar', {'id': 'foo', 'width': '25%', 'height': '50px', 'style': 'border:1px solid aqua'}, function () { this.body.html( 'window.iframe.' + this.handle + ' says ... hello'); this.body.css({'color':'white'}) })
+		$('.haystack').iframe(
+			'bar', // window handle prefix
+			{'id': 'foo', 'width': '25%', 'height': '50px', 'style': 'border:1px solid aqua'}, // iframe attributes
+			function () { // callback function
+				this.body.html( 'window.iframe.' + this.handle + ' says ... hello'); // innerHTML
+				this.body.css({'color':'white'}); // jQuery inline styles
+				this.iframe.attr({'width': (this.index * 150) + this.iframe.width()}); // modify the container attributes
+				if(this.handle === 'one') { // conditional actions: inject external stylesheet, change height.
+					this.head.html('<link rel="stylesheet" href="http://fliptopbox.com/LBFFC/css/global.css">');
+					this.iframe.height(200);
+				}
+				if(this.handle === 'two') {
+					this.head.html('<link rel="stylesheet" type="text/css" href="http://sync-slate.com/themes/syncslate/css/global.css">');
+					this.body.prepend('<div class="chevron"></div>');
+				}
+			}
+		);
 	});
 </script>
 </html>
